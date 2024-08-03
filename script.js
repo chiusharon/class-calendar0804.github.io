@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const app = {
         isAdmin: false,
         currentMonth: new Date().getMonth(),
@@ -12,7 +12,43 @@
             this.renderCalendar();
         },
 
-        // ... (保留之前的 setupMonthSelector, setupColorPickers, setupAdminLogin 方法)
+        setupMonthSelector() {
+            const selector = document.getElementById('month-selector');
+            const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            months.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = month;
+                selector.appendChild(option);
+            });
+            selector.value = this.currentMonth;
+            selector.addEventListener('change', (e) => {
+                this.currentMonth = parseInt(e.target.value);
+                this.renderCalendar();
+            });
+        },
+
+        setupColorPickers() {
+            document.getElementById('bg-color').addEventListener('change', (e) => {
+                document.body.style.backgroundColor = e.target.value;
+            });
+            document.getElementById('font-color').addEventListener('change', (e) => {
+                document.body.style.color = e.target.value;
+            });
+        },
+
+        setupAdminLogin() {
+            document.getElementById('login-btn').addEventListener('click', () => {
+                const password = document.getElementById('admin-password').value;
+                if (password === 'admin123') { // 這裡設置管理員密碼
+                    this.isAdmin = true;
+                    alert('管理員登入成功！');
+                    this.renderCalendar();
+                } else {
+                    alert('密碼錯誤！');
+                }
+            });
+        },
 
         renderCalendar() {
             const calendar = document.getElementById('calendar');
